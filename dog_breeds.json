@@ -1,0 +1,23 @@
+{
+    "allDogs": {
+        "australian": {
+            "friendly": true
+        },
+        "buhund": {
+            "friendly": true
+        },
+        "bulldog": {
+            "friendly": true
+        },
+        "bullterrier": {
+            "friendly": false
+        },
+        "cattledog": {
+            "friendly": true
+        },
+        "dane": {
+            "friendly": false
+        }
+    },
+    "status": "success"
+}
