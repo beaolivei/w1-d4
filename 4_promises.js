@@ -22,28 +22,25 @@ const successfulRequest = {
     },
     status: "success"
 }
-// mocks error message
 const error = new Error ("Couldn't load breeds")
 
-console.log('... page loaded...')
+function handleRequest (yey, meh){
+setTimeout(() => {
+    if(Math.random() < 0.5){
+        let response = successfulRequest
+        yey(response)
+    } else{
+        let response = error
+        meh(response)
+    }
+}, 1000)
+}
 
-function handleResponse(dog, cats){
-    setTimeout(function(){
-        if(Math.random() < 0.5){
-            let response = successfulRequest
-            dog(response)
-        } else {
-            let response = error
-            cats(response)
-        }
-    }, 1000)
-} 
+const getDogs = new Promise(handleRequest)
 
-const retrieveDogs = new Promise(handleResponse )
+console.log('loading...')
 
-
-
-retrieveDogs
-.then((response) => console.log('this is the data you want:', response))
-.then(() => setTimeout(() => console.log('have you thought about cats?'), 1000))
-.catch((err) => console.log('this the error:', err))
+getDogs
+.then((response) => console.log('your info on dogs:', response))
+.then(() => setTimeout(() => { console.log('have you thought about cats?')} , 1000))
+.catch((err) => console.log(err))

@@ -3,51 +3,49 @@
 // on success, we call a callback to log the response
 // on error we call another callback to log the error
 
-// mocks successful response as if we already have done JSON.parse(jsonResponse)
-//JSON.parse(jsonReponse)
 const successfulRequest = {
-        allDogs: {
-            australian: {
-                friendly: true
-            },
-            buhund: {
-                friendly: true
-            },
-            bulldog: {
-                friendly: true
-            },
-            bullterrier: {
-                friendly: false
-            },
-            cattledog: {
-                friendly: true
-            },
-            dane: {
-                friendly: false
-            }
+    allDogs: {
+        australian: {
+            friendly: true
         },
-        status: "success"
-    }
+        buhund: {
+            friendly: true
+        },
+        bulldog: {
+            friendly: true
+        },
+        bullterrier: {
+            friendly: false
+        },
+        cattledog: {
+            friendly: true
+        },
+        dane: {
+            friendly: false
+        }
+    },
+    status: "success"
+}
+
 // mocks error message
 const error = new Error ("Couldn't load breeds")
 
-console.log('Page loaded ...')
+console.log("... loading ...")
 
-function retrieveDogs (nextStep){
-
+const getDogs = (callback) => {
     setTimeout(function(){
         if(Math.random() < 0.5){
             let response = successfulRequest
-            nextStep(response)
+            callback(response)
         } else {
             let response = error
-            nextStep(response)
+            callback(response)
         }
     }, 1000)
 }
 
-function showResponse (response){
-    console.log('response is:', response)
+function nextAction (myResponse){
+    console.log(myResponse)
 }
 
-retrieveDogs(showResponse)
+getDogs(nextAction)

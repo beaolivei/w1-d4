@@ -3,7 +3,7 @@
 // on success, we call a callback to make the user to actually think about cats, 1 second later
 // and after that, we want to show more cat's information, 1 second later
 // on error we call another callback to log the error
-// after the error we want to ask the user to update the page, after 1 minute
+// after the error we want to ask the user to update the page, after 1 second
 
 const successfulRequest = {
     allDogs: {
@@ -28,54 +28,93 @@ const successfulRequest = {
     },
     status: "success"
 }
+
+const successfulRequestCats = {
+    allCats: {
+        domesticShorthair: {
+            friendly: true
+        },
+        domesticLongHair: {
+            friendly: true
+        },
+        siamese: {
+            friendly: true
+        },
+        americanShorthair: {
+            friendly: false
+        },
+        ragdoll: {
+            friendly: true
+        },
+        bangal: {
+            friendly: false
+        }
+    },
+    status: "success"
+}
+
 // mocks error message
 const error = new Error ("Couldn't load breeds")
 
-console.log('Page loaded ...')
+console.log("...loading...")
 
-function retrieveDogs (time, onSuccess, onError, showCats){
-
-setTimeout(function(){
-    if(Math.random() < 0.5){
-        let response = successfulRequest
-        onSuccess(response, time, showCats)
-    } else {
-        let response = error
-        onError(response, time)
-    }
-}, time)
+const getDogs = (onSuccessCallback, onErrorCallback, getCatsCallback, onCatsSuccess, onCatsError) => {
+    const firstActionTime = 1000
+    setTimeout(() => {
+        if(Math.random() < 0.5){
+            let response = successfulRequest
+            onSuccessCallback(firstActionTime, response, getCatsCallback, onCatsSuccess, onCatsError)
+        } else {
+            let response = error
+            onErrorCallback(firstActionTime, response)
+        }
+    }, firstActionTime)
 }
 
-function onSuccess(response, time, showCats){
-
-    const secondCallTime = time + 1000
-    const thirdCallTime = time + 2000
-    console.log('this is your successful response:', response)
-
-    setTimeout(() => console.log('Have you thought about cats?'), secondCallTime)
-
-    showCats(thirdCallTime)
+const getCats = (onSuccessCallback, onErrorCallback) => {
+    setTimeout(() => {
+        if(Math.random() < 0.5){
+            let response = successfulRequestCats
+            onSuccessCallback(response)
+        } else {
+            let response = error
+            onErrorCallback(response)
+        }
+    }, 1000)
 }
 
-function showCats (time){
-    setTimeout(
-        function(){
-            if(Math.random() < 0.5){
-                console.log('cats are very cute')
-            } else {
-                console.log(new Error('Sorry, maybe cats are not for you'))
-            }
-
-        }, time + 1000
-    )
+const onSuccessCats = (response) => {
+    console.log("here some cat breeds: ", response)
 }
 
-function onError(response, time){
-    const secondCallTime = time + 1000
-
-    console.log('this is your error:', response)
-
-    setTimeout(()=>console.log('Please reload the page'),secondCallTime)
+const onErrorCats = (response) => {
+    console.log('sorry, maybe cats are not for you')
 }
 
-retrieveDogs(1000, onSuccess, onError, showCats)
+function onSuccess (time, response, getCatsCallback, onCatsSuccess, onCatsError){
+    const secondActionTime = time + 1000
+    const thridActionTime = secondActionTime + 1000
+    
+    console.log('the info about dogs that you wanted: ', response)
+
+    setTimeout(function(){
+        console.log("Have you thought about cats?")
+    }, secondActionTime)
+
+    setTimeout(function(){
+        getCatsCallback(onCatsSuccess, onCatsError)
+    }, thridActionTime)
+}
+
+const onError = (time, response) => {
+    const secondActionTime = time + 1000
+
+    console.log('error:', response)
+
+    setTimeout(() => {
+       console.log("Please refresh your page!") 
+    }, secondActionTime)
+
+}
+
+getDogs(onSuccess, onError, getCats, onSuccessCats, onErrorCats)

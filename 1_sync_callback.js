@@ -1,23 +1,20 @@
-//let's create a function that takes an array and a callback
-// our function loops through the array and for each item it applies a callback function
-// the callback takes an array of numbers and multiplies it by two
+//let's create a calculator function that takes two numbers and perfom
+// some calculation on it. 
+// our calculator should handle sum and subtraction
 
-const myNumbers = [ 1, 2, 3, 4, 5]
-
-
-function loopMyNumbers (array, callback) {
-    for(i=0; i<array.length; i++){
-        callback(array[i])
-    }
+function calculator (firstNumber, secondNumber, operation){
+    const result = operation(firstNumber, secondNumber)
+    console.log('The result is: ', result)
 }
 
-function multiplyByTwo (number){
-    const newNumber = number * 2
-    console.log(newNumber)
+const sumCallback = (numberA, numberB) => {
+    return numberA + numberB
 }
 
+const subtractionCallback = (n1, n2) => {
+    return n1 - n2
+}
 
-loopMyNumbers(myNumbers, multiplyByTwo)
-
+calculator(100,30,subtractionCallback)
 
 
